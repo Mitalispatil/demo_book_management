@@ -42,6 +42,10 @@ def load_file(path):
     return ""
 
 def load_old_testcases(path="backend/adaptation/old_testcases.json") -> str:
+    if os.path.exists(path):
+        logging.info(f"📄 Using {path} as baseline for adaptation.")
+    else:
+        logging.warning(f"⚠ No baseline found at {path}, using empty string.")
     return load_file(path)
 
 def save_adapted_testcases(adapted: str, path="backend/adaptation/adapted_testcases.json"):
@@ -65,19 +69,23 @@ def adapt_test_cases(merged_diff: str, old_testcases: str) -> str:
 
     Return only updated test cases in JSON array format.
     """
-    logging.info("Sending prompt to Gemini...")
+    logging.info("🤖 Sending prompt to Gemini for adaptation...")
     return gemini_client.generate_text([prompt])
 
 def main():
+    logging.info("🚀 Starting Test Case Adaptation Process")
+
     # Step 1: BRD diff
     old_brd = extract_text_from_pdf("backend/adaptation/old_BRD.pdf")
     new_brd = extract_text_from_pdf("backend/adaptation/new_BRD.pdf")
     brd_diff = generate_diff(old_brd, new_brd)
 
-    # Step 2: Code diff from Git
+    # Step 2: Code diff from Git (last commit)
+    logging.info("🔍 Generating code diff from last commit...")
     os.system("git diff HEAD~1 HEAD -- '*.py' '*.js' '*.jsx' > backend/adaptation/code_diff.txt")
-
     code_diff = load_file("backend/adaptation/code_diff.txt")
+    if not code_diff.strip():
+        logging.warning("⚠ No code changes detected in the last commit.")
 
     # Step 3: Figma diff (as JSON)
     old_figma = extract_text_from_json("backend/adaptation/old_figma.json")
@@ -96,12 +104,16 @@ def main():
 {figma_diff}
 """
 
+    # Load baseline test cases
     old_testcases = load_old_testcases()
+
+    # Adapt test cases
     adapted = adapt_test_cases(merged_diff, old_testcases)
 
     logging.info("🔁 Adapted Response from Gemini:")
     print(adapted)
 
+    # Save output
     save_adapted_testcases(adapted)
 
 if __name__ == "__main__":
