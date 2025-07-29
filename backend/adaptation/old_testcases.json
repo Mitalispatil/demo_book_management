@@ -1,3 +1,4 @@
+```json
 [
   {
     "id": "TC-ADD-POS-01",
@@ -9,12 +10,13 @@
     "pre_condition": "N/A",
     "test_steps": [
       "Navigate to 'Add Book' page",
-      "Enter a valid 13-digit ISBN", 
+      "Enter a valid 13-digit ISBN",
       "Enter a valid book title",
       "Enter a valid author name",
       "Select a genre from the dropdown",
       "Enter a valid 4-digit publication year",
       "Enter a valid number of copies (integer >= 1)",
+      "Enter a language",
       "Click 'Save'"
     ],
     "test_data": {
@@ -23,7 +25,8 @@
       "Author": "J.R.R. Tolkien",
       "Genre": "Fantasy",
       "Publication Year": "1954",
-      "Number of Copies": 5
+      "Number of Copies": 5,
+      "Language": "English"
     },
     "expected_result": "Success message 'Book 'The Lord of the Rings' added successfully' is displayed. Book appears in inventory with all data saved correctly."
   },
@@ -203,7 +206,26 @@
     "test_data": {
       "Title": "The Lord of the Rings"
     },
-    "expected_result": "A page displays complete details of the selected book (ISBN, Title, Author, Genre, Publication Year, Number of Copies)."
+    "expected_result": "A page displays complete details of the selected book (ISBN, Title, Author, Genre, Publication Year, Number of Copies, Language)."
+  },
+  {
+    "id": "TC-DETAILS-POS-02",
+    "scenario": "Book Management: View Book Details",
+    "type": "Positive",
+    "priority": "P1",
+    "severity": "High",
+    "summary": "Verify Language field is displayed in book details.",
+    "pre_condition": "A book with Language data exists",
+    "test_steps": [
+      "Navigate to 'Search Books' page",
+      "Search for a book",
+      "Click on a book from search results to view details",
+      "Verify that the Language field is displayed and contains the correct value."
+    ],
+    "test_data": {
+      "Title": "The Lord of the Rings"
+    },
+    "expected_result": "The Language field is displayed and contains the correct value."
   },
   {
     "id": "TC-RETURN-NEG-02",
@@ -426,3 +448,4 @@
     "expected_result": "Appropriate error message is displayed. Return fails."
   }
 ]
+```
