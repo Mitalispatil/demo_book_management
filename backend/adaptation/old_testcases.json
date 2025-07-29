@@ -526,6 +526,72 @@
       "ISBN": "9780321765723"
     },
     "expected_result": "Appropriate error message is displayed. Reservation fails."
+  },
+  {
+    "id": "TC-EXTEND-DUE-DATE-POS-01",
+    "scenario": "Member Checkout Management: Extend Due Date",
+    "type": "Positive",
+    "priority": "P1",
+    "severity": "High",
+    "summary": "Extend the due date of a checked-out book.",
+    "pre_condition": "A book is checked out.",
+    "test_steps": [
+      "Navigate to 'Extend Due Date' page",
+      "Enter a valid Member ID",
+      "Enter a valid Book ISBN",
+      "Enter a number of extra days",
+      "Click 'Extend'"
+    ],
+    "test_data": {
+      "MemberID": "12345",
+      "ISBN": "9780321765723",
+      "extraDays": 7
+    },
+    "expected_result": "Success message 'Due date for book [ISBN] has been extended by [extraDays] days for Member [MemberID]' is displayed. The DueDate in the checkout record is updated."
+  },
+  {
+    "id": "TC-EXTEND-DUE-DATE-NEG-01",
+    "scenario": "Member Checkout Management: Extend Due Date",
+    "type": "Negative",
+    "priority": "P1",
+    "severity": "High",
+    "summary": "Attempt to extend the due date of a book that is not checked out.",
+    "pre_condition": "N/A",
+    "test_steps": [
+      "Navigate to 'Extend Due Date' page",
+      "Enter a valid Member ID",
+      "Enter a valid Book ISBN (not checked out)",
+      "Enter a number of extra days",
+      "Click 'Extend'"
+    ],
+    "test_data": {
+      "MemberID": "12345",
+      "ISBN": "9780123456789",
+      "extraDays": 7
+    },
+    "expected_result": "Error message 'Active checkout record not found' is displayed.  The due date is not extended."
+  },
+  {
+    "id": "TC-EXTEND-DUE-DATE-NEG-02",
+    "scenario": "Member Checkout Management: Extend Due Date",
+    "type": "Negative",
+    "priority": "P1",
+    "severity": "High",
+    "summary": "Attempt to extend the due date with invalid input (negative extraDays).",
+    "pre_condition": "A book is checked out.",
+    "test_steps": [
+      "Navigate to 'Extend Due Date' page",
+      "Enter a valid Member ID",
+      "Enter a valid Book ISBN",
+      "Enter a negative number of extra days",
+      "Click 'Extend'"
+    ],
+    "test_data": {
+      "MemberID": "12345",
+      "ISBN": "9780321765723",
+      "extraDays": -7
+    },
+    "expected_result": "Appropriate error message is displayed. The due date is not extended."
   }
 ]
 ```
