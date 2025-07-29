@@ -41,6 +41,13 @@ router.post("/reserve", async (req, res) => {
     res.json({ message: `Book ${ISBN} reserved successfully for Member ${MemberID}` });
 });
 
+// New Feature: Cancel Reservation
+router.post("/cancel-reservation", async (req, res) => {
+    const { MemberID, ISBN } = req.body;
+    // In a real app we’d update DB, but for now just return a success message
+    res.json({ message: `Reservation for book ${ISBN} has been cancelled for Member ${MemberID}` });
+});
+
 module.exports = router;
 
 // will just check the workflow so this comment is added.
