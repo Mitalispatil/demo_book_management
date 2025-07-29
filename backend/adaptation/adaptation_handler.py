@@ -17,12 +17,14 @@ from utils import gemini_client
 
 load_dotenv()
 
+
 def extract_text_from_pdf(path):
     if not os.path.exists(path):
         logging.warning(f"{path} not found.")
         return ""
     reader = PdfReader(path)
     return "\n".join([page.extract_text() or "" for page in reader.pages])
+
 
 def extract_text_from_json(path):
     if not os.path.exists(path):
@@ -32,14 +34,17 @@ def extract_text_from_json(path):
         data = json.load(f)
     return json.dumps(data, indent=2)
 
+
 def generate_diff(old: str, new: str) -> str:
     return "\n".join(difflib.unified_diff(old.splitlines(), new.splitlines(), lineterm=""))
+
 
 def load_file(path):
     if os.path.exists(path):
         with open(path, "r", encoding="utf-8") as f:
             return f.read()
     return ""
+
 
 def load_old_testcases(path="backend/adaptation/old_testcases.json") -> str:
     if os.path.exists(path):
@@ -48,10 +53,21 @@ def load_old_testcases(path="backend/adaptation/old_testcases.json") -> str:
         logging.warning(f"⚠ No baseline found at {path}, using empty string.")
     return load_file(path)
 
+
 def save_adapted_testcases(adapted: str, path="backend/adaptation/adapted_testcases.json"):
     with open(path, "w", encoding="utf-8") as f:
         f.write(adapted)
     logging.info(f"✅ Adapted test cases saved at {path}")
+
+
+def is_valid_testcases_json(content: str) -> bool:
+    """Check if the given string is valid JSON and contains a non-empty list."""
+    try:
+        data = json.loads(content)
+        return isinstance(data, list) and len(data) > 0
+    except Exception:
+        return False
+
 
 def adapt_test_cases(merged_diff: str, old_testcases: str) -> str:
     prompt = f"""
@@ -71,6 +87,7 @@ def adapt_test_cases(merged_diff: str, old_testcases: str) -> str:
     """
     logging.info("🤖 Sending prompt to Gemini for adaptation...")
     return gemini_client.generate_text([prompt])
+
 
 def main():
     logging.info("🚀 Starting Test Case Adaptation Process")
@@ -104,17 +121,26 @@ def main():
 {figma_diff}
 """
 
-    # Load baseline test cases
+    # Step 5: Load baseline test cases
     old_testcases = load_old_testcases()
 
-    # Adapt test cases
+    # Step 6: Adapt test cases
     adapted = adapt_test_cases(merged_diff, old_testcases)
 
     logging.info("🔁 Adapted Response from Gemini:")
     print(adapted)
 
-    # Save output
+    # Step 7: Save adapted testcases to adapted_testcases.json
     save_adapted_testcases(adapted)
+
+    # Step 8: Only update old_testcases.json if the adaptation is valid JSON
+    if is_valid_testcases_json(adapted):
+        logging.info("✅ Adaptation successful — updating old_testcases.json")
+        with open("backend/adaptation/old_testcases.json", "w", encoding="utf-8") as f:
+            f.write(adapted)
+    else:
+        logging.warning("⚠ Adaptation failed or returned invalid JSON — keeping old_testcases.json unchanged")
+
 
 if __name__ == "__main__":
     main()
