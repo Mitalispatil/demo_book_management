@@ -228,24 +228,6 @@
     "expected_result": "The Language field is displayed and contains the correct value."
   },
   {
-    "id": "TC-RETURN-NEG-02",
-    "scenario": "Member Checkout Management: Return Book",
-    "type": "Negative",
-    "priority": "P2",
-    "severity": "Medium",
-    "summary": "Attempt to return a book that has not been checked out.",
-    "pre_condition": "N/A",
-    "test_steps": [
-      "Navigate to 'Return Book' page",
-      "Enter an ISBN for a book that has not been checked out",
-      "Click 'Return'"
-    ],
-    "test_data": {
-      "ISBN": "9780123456789"
-    },
-    "expected_result": "Appropriate error message is displayed or system gracefully handles the situation without error. Return fails or does nothing."
-  },
-  {
     "id": "TC-SEARCH-POS-02",
     "scenario": "Book Management: Search Books",
     "type": "Positive",
@@ -446,6 +428,24 @@
       "ISBN": "InvalidISBN"
     },
     "expected_result": "Appropriate error message is displayed. Return fails."
+  },
+  {
+    "id": "TC-RETURN-NEG-02",
+    "scenario": "Member Checkout Management: Return Book",
+    "type": "Negative",
+    "priority": "P2",
+    "severity": "Medium",
+    "summary": "Attempt to return a book that has not been checked out.",
+    "pre_condition": "N/A",
+    "test_steps": [
+      "Navigate to 'Return Book' page",
+      "Enter an ISBN for a book that has not been checked out",
+      "Click 'Return'"
+    ],
+    "test_data": {
+      "ISBN": "9780123456789"
+    },
+    "expected_result": "Appropriate error message is displayed or system gracefully handles the situation without error. Return fails or does nothing."
   }
 ]
 ```
