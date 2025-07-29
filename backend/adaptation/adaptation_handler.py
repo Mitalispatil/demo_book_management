@@ -75,8 +75,8 @@ def main():
     brd_diff = generate_diff(old_brd, new_brd)
 
     # Step 2: Code diff from Git
-    os.system("git fetch origin main")
-    os.system("git diff origin/main -- '*.py' '*.js' '*.jsx' > backend/adaptation/code_diff.txt")
+    os.system("git diff HEAD~1 HEAD -- '*.py' '*.js' '*.jsx' > backend/adaptation/code_diff.txt")
+
     code_diff = load_file("backend/adaptation/code_diff.txt")
 
     # Step 3: Figma diff (as JSON)

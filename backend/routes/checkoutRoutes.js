@@ -34,6 +34,13 @@ router.post("/return", async (req, res) => {
 
     res.json({ message: `Book ${ISBN} returned successfully` });
 });
+
+// New Feature: Reserve Book
+router.post("/reserve", async (req, res) => {
+    const { MemberID, ISBN } = req.body;
+    res.json({ message: `Book ${ISBN} reserved successfully for Member ${MemberID}` });
+});
+
 module.exports = router;
 
 // will just check the workflow so this comment is added.
