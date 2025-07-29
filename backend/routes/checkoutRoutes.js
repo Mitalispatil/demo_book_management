@@ -48,5 +48,26 @@ router.post("/reserve", async (req, res) => {
     res.json({ message: `Book ${ISBN} reserved successfully for Member ${MemberID}` });
 });
 
-module.exports = router;
+// New Feature: Extend Due Date
+router.post("/extend-due-date", async (req, res) => {
+    const { MemberID, ISBN, extraDays } = req.body;
 
+    const checkout = await Checkout.findOne({ MemberID, ISBN, Returned: false });
+    if (!checkout) {
+        return res.status(404).json({ message: "Active checkout record not found" });
+    }
+
+    // If no due date exists, set a default one (e.g., today + extraDays)
+    if (!checkout.DueDate) {
+        checkout.DueDate = new Date();
+    }
+
+    // Extend by the given number of days
+    checkout.DueDate.setDate(checkout.DueDate.getDate() + extraDays);
+    await checkout.save();
+
+    res.json({ message: `Due date for book ${ISBN} has been extended by ${extraDays} days for Member ${MemberID}` });
+});
+
+
+module.exports = router;
