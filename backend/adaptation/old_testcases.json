@@ -400,7 +400,7 @@
     "priority": "P1",
     "severity": "High",
     "summary": "Return a book.",
-    "pre_condition": "N/A",
+    "pre_condition": "A book has been checked out",
     "test_steps": [
       "Navigate to 'Return Book' page",
       "Enter a valid Book ISBN",
