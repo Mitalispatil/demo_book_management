@@ -1,0 +1,27 @@
+# Ignore dependencies
+node_modules/
+backend/node_modules/
+frontend/node_modules/
+
+# Ignore lock files (optional, if you don't want them in repo)
+package-lock.json
+frontend/package-lock.json
+backend/package-lock.json
+
+# Environment
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build output
+build/
+dist/
+
+# Logs
+*.log

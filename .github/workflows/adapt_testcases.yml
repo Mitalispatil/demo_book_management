@@ -1,0 +1,51 @@
+name: Adapt Test Cases on Push
+
+on:
+  push:
+    paths:
+      - '**.py'
+      - '**.js'
+      - '**.jsx'
+      - '**.json'
+      - '**.pdf'
+      - '**.docx'
+
+jobs:
+  adapt-test-cases:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r backend/requirements.txt
+
+      - name: Run Adaptation Handler
+        env:
+          MODEL_API_URL: ${{ secrets.MODEL_API_URL }}
+          GOOGLE_API_KEY: ${{ secrets.MODEL_API_KEY }}
+        run: |
+          source venv/bin/activate
+          python backend/adaptation/adaptation_handler.py
+
+      - name: Upload Adapted Testcases
+        uses: actions/upload-artifact@v4
+        with:
+          name: adapted-testcases
+          path: backend/adaptation/adapted_testcases.json
+          
+      - name: Upload Code Diff
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-diff
+          path: backend/adaptation/code_diff.txt
+
