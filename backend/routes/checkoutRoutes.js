@@ -42,5 +42,11 @@ router.post("/cancel-reservation", async (req, res) => {
     res.json({ message: `Reservation for book ${ISBN} has been cancelled for Member ${MemberID}` });
 });
 
+// New Feature: Reserve Book
+router.post("/reserve", async (req, res) => {
+    const { MemberID, ISBN } = req.body;
+    res.json({ message: `Book ${ISBN} reserved successfully for Member ${MemberID}` });
+});
+
 module.exports = router;
 
