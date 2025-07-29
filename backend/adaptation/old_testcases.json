@@ -446,6 +446,86 @@
       "ISBN": "9780123456789"
     },
     "expected_result": "Appropriate error message is displayed or system gracefully handles the situation without error. Return fails or does nothing."
+  },
+  {
+    "id": "TC-RESERVE-POS-01",
+    "scenario": "Member Checkout Management: Reserve Book",
+    "type": "Positive",
+    "priority": "P1",
+    "severity": "High",
+    "summary": "Reserve a book with available copies.",
+    "pre_condition": "N/A",
+    "test_steps": [
+      "Navigate to 'Reserve Book' page",
+      "Enter a valid Member ID",
+      "Enter a valid Book ISBN with available copies",
+      "Click 'Reserve'"
+    ],
+    "test_data": {
+      "Member ID": "12345",
+      "ISBN": "9780321765723"
+    },
+    "expected_result": "Confirmation message 'Book [ISBN] reserved successfully for Member [Member ID]' is displayed."
+  },
+  {
+    "id": "TC-RESERVE-NEG-01",
+    "scenario": "Member Checkout Management: Reserve Book",
+    "type": "Negative",
+    "priority": "P1",
+    "severity": "High",
+    "summary": "Attempt to reserve a book with no available copies.",
+    "pre_condition": "N/A",
+    "test_steps": [
+      "Navigate to 'Reserve Book' page",
+      "Enter a valid Member ID",
+      "Enter a valid Book ISBN with zero available copies",
+      "Click 'Reserve'"
+    ],
+    "test_data": {
+      "Member ID": "12345",
+      "ISBN": "9780321765723"
+    },
+    "expected_result": "Error message 'No available copies for ISBN [ISBN]' is displayed. Reservation fails."
+  },
+  {
+    "id": "TC-RESERVE-NEG-02",
+    "scenario": "Member Checkout Management: Reserve Book",
+    "type": "Negative",
+    "priority": "P1",
+    "severity": "High",
+    "summary": "Attempt to reserve a book with an invalid ISBN.",
+    "pre_condition": "N/A",
+    "test_steps": [
+      "Navigate to 'Reserve Book' page",
+      "Enter a valid Member ID",
+      "Enter an invalid Book ISBN",
+      "Click 'Reserve'"
+    ],
+    "test_data": {
+      "Member ID": "12345",
+      "ISBN": "InvalidISBN"
+    },
+    "expected_result": "Appropriate error message is displayed. Reservation fails."
+  },
+  {
+    "id": "TC-RESERVE-NEG-03",
+    "scenario": "Member Checkout Management: Reserve Book",
+    "type": "Negative",
+    "priority": "P1",
+    "severity": "High",
+    "summary": "Attempt to reserve a book with an invalid Member ID.",
+    "pre_condition": "N/A",
+    "test_steps": [
+      "Navigate to 'Reserve Book' page",
+      "Enter an invalid Member ID",
+      "Enter a valid Book ISBN",
+      "Click 'Reserve'"
+    ],
+    "test_data": {
+      "Member ID": "InvalidMemberID",
+      "ISBN": "9780321765723"
+    },
+    "expected_result": "Appropriate error message is displayed. Reservation fails."
   }
 ]
 ```
